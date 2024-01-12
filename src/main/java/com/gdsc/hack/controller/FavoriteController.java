@@ -18,8 +18,8 @@ public class FavoriteController {
     private final FavoriteService favoriteService;
 
     @PostMapping()
-    public ResponseEntity<?> addMemberFavorite(@RequestBody Map<String,Long> postId, @JwtResolver UserDTO userDTO){
-        return favoriteService.toggleMemberFavorite(postId.get("postId"), userDTO);
+    public void addMemberFavorite(@RequestBody Map<String,Long> postId, @JwtResolver UserDTO userDTO){
+         favoriteService.toggleMemberFavorite(postId.get("postId"), userDTO);
     }
 
     // 유저가 찜한 게시물 불러오기

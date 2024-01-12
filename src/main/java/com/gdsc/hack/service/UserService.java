@@ -54,7 +54,8 @@ public class UserService {
     }
 
     private User getByCredentials(String email, String password) {
-        final User originalUser=userRepository.findByEmail(email);
+        final User originalUser=userRepository.findByEmail(email)
+                .orElseThrow(()-> new IllegalArgumentException("getByCredentials: 유저의 이메일을 찾을 수 없습니다."));
 
 
         if(originalUser!=null && passwordEncoder.encrypt(email,password).equals(originalUser.getPassword())) {

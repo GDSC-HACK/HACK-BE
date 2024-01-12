@@ -23,4 +23,9 @@ public class FavoriteController {
     }
 
     // 유저가 찜한 게시물 불러오기
+    @GetMapping("/my")
+    public ResponseEntity<?> findAllFavoriteByUser(@JwtResolver UserDTO userDTO){
+        return new ResponseEntity<>(favoriteService.findAllFavoriteByUser(userDTO), HttpStatus.OK);
+    }
+
 }

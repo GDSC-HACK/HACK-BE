@@ -13,13 +13,4 @@ public class PostRequestDto {
     public String title;
     public String content;
     public FoodMapRequestDto foodMap;
-
-    public Post toEntity(User user) {
-        return Post
-                .builder()
-                .title(this.title)
-                .content(this.content)
-                .user(user)
-                .build();
-    }
 }

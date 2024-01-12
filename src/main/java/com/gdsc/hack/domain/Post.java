@@ -23,8 +23,8 @@ public class Post extends BaseEntity {
     private String title;
     private String content;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
-    private final List<FoodMap> foodMapList = new ArrayList<>();
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "post", cascade = CascadeType.REMOVE)
+    private FoodMap foodMap;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "user_id")

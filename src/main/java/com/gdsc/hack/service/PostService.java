@@ -28,8 +28,7 @@ public class PostService {
     @Transactional
     public Post writePost(PostRequestDto dto) {
         // 예외처리가 필요합니다. auth 수정되면 그 다음에 예외처리 시작
-        User user = userRepository.findByEmail(dto.getEmail())
-                .orElseThrow(()->new IllegalArgumentException("writePost: 유저가 존재하지 않습니다."));
+        User user = userRepository.findByEmail(dto.getEmail());
         Post post = Post
                 .builder()
                 .title(dto.getTitle())

@@ -5,7 +5,10 @@ import com.gdsc.hack.domain.Post;
 import com.gdsc.hack.domain.User;
 import com.gdsc.hack.dto.FavoriteDTO;
 import com.gdsc.hack.dto.UserDTO;
+<<<<<<< HEAD
 import com.gdsc.hack.repository.FavoriteRepository;
+=======
+>>>>>>> 34f195a51101cc226a5943e85ce18640db9f3b82
 import com.gdsc.hack.repository.PostRepository;
 import com.gdsc.hack.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +26,7 @@ public class FavoriteService {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
 
+<<<<<<< HEAD
     public void toggleMemberFavorite(Long postId, UserDTO userDTO) {
         // 게시물 찾기
         Post post = postRepository.findById(postId)
@@ -57,5 +61,55 @@ public class FavoriteService {
         return favorites.stream()
                 .map(FavoriteDTO::from)
                 .collect(Collectors.toList());
+=======
+
+  +
+
+    public FavoriteDTO toggleMemberFavorite(Long postId, UserDTO userDTO) {
+        // 게시물 찾기
+        -Post post = postRepository.findById(postId)
+                -                .orElseThrow(() -> new IllegalArgumentException("게시물이 존재하지 않습니다."));
+        +
+
+                // 유저 정보 가져오기
+                -User user = userRepository.findByEmail(userDTO.getEmail())
+                -                .
+        orElseThrow(() -> new IllegalArgumentException("toggleMemberFavorite: 유저가 존재하지않습니다."));
+        +User user = userRepository.findByEmail(userDTO.getEmail());
+
+        // 찜하기 여부 체크
+        -Favorite findFavorite = user.getFavorites().stream()
+                -                .filter(favorite -> favorite.getPost().getId().equals(postId))
+                -                .findFirst()
+                -                .orElse(null);
+        -
+                -        // 찜하기 여부확인후 저장
+                        - if (findFavorite == null) {
+            -Favorite favorite = new Favorite(user, post);
+            -favoriteRepository.save(favorite);
+            - return;
+            -
+        }
+        +use
+
+                - favoriteRepository.delete(findFavorite);
+        -
+>>>>>>> 34f195a51101cc226a5943e85ce18640db9f3b82
     }
+
+-
+
+    public List<FavoriteDTO> findAllFavoriteByUser(UserDTO userDTO) {
+        -User user = userRepository.findByEmail(userDTO.getEmail())
+                -                .
+        orElseThrow(() -> new IllegalArgumentException("findAllFavoriteByUser: 존재하지 않는 유저입니다."));
+        +        // 찜하기 여부확인후 저장
+
+                -List < Favorite > favorites = favoriteRepository.findByUser(user);
+
+        - return favorites.stream()
+                -                .map(FavoriteDTO::from)
+                -                .collect(Collectors.toList());
+    }
+
 }

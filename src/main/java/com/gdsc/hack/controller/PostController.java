@@ -10,6 +10,7 @@ import com.gdsc.hack.global.dto.ResponseDto;
 import com.gdsc.hack.service.FoodMapService;
 import com.gdsc.hack.service.MapNodeService;
 import com.gdsc.hack.service.PostService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -27,7 +28,7 @@ public class PostController {
 
     @PostMapping("/post")
     public ResponseDto<Void> post(
-        @RequestBody PostRequestDto requestDto
+        @RequestBody @Valid PostRequestDto requestDto
     ) {
         Post post = postService.writePost(requestDto);
         FoodMap foodMap = foodMapService.writeFoodMap(post);
@@ -40,7 +41,7 @@ public class PostController {
 
     @PutMapping("/post")
     public ResponseDto<Void> fixPost(
-        @RequestBody PostEditRequestDto requestDto
+        @RequestBody @Valid PostEditRequestDto requestDto
     ) {
         postService.editPost(requestDto);
         List<MapNodeEditRequestDto> mapNodeList = requestDto.getFoodMap().getMapNodeList();

@@ -20,7 +20,7 @@ public class UserController {
     private final UserService userService;
 
     //회원가입
-    @PostMapping
+    @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody UserDTO userDTO){
         User user = userService.createUser(userDTO);
         return new ResponseEntity<>(user, HttpStatus.OK);
@@ -28,7 +28,7 @@ public class UserController {
 
 
     //로그인
-    @PostMapping("/signup")
+    @PostMapping("/signin")
     public ResponseEntity<?> signInUser(@RequestBody UserDTO userDTO){
         UserDTO response = userService.signInUser(userDTO);
         return ResponseEntity.ok().body(response);

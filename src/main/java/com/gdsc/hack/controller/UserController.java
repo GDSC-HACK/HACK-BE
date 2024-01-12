@@ -3,6 +3,7 @@ package com.gdsc.hack.controller;
 import com.gdsc.hack.domain.User;
 import com.gdsc.hack.dto.UserDTO;
 import com.gdsc.hack.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -21,7 +22,7 @@ public class UserController {
 
     //회원가입
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@RequestBody UserDTO userDTO){
+    public ResponseEntity<?> signUp(@RequestBody @Valid UserDTO userDTO){
         User user = userService.createUser(userDTO);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
@@ -29,7 +30,7 @@ public class UserController {
 
     //로그인
     @PostMapping("/signin")
-    public ResponseEntity<?> signInUser(@RequestBody UserDTO userDTO){
+    public ResponseEntity<?> signInUser(@RequestBody @Valid UserDTO userDTO){
         UserDTO response = userService.signInUser(userDTO);
         return ResponseEntity.ok().body(response);
     }

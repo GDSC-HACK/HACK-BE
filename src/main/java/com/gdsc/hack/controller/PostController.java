@@ -12,6 +12,7 @@ import com.gdsc.hack.global.dto.ResponseDto;
 import com.gdsc.hack.service.FoodMapService;
 import com.gdsc.hack.service.MapNodeService;
 import com.gdsc.hack.service.PostService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,7 @@ public class PostController {
     private final MapNodeService mapNodeService;
 
     @PostMapping("/write")
+    @Operation(description = "게시글을 작성하는 api입니다.")
     public ResponseDto<Void> post(
         @RequestBody @Valid PostRequestDto requestDto
     ) {
@@ -40,6 +42,7 @@ public class PostController {
     }
 
     @PutMapping("/edit")
+    @Operation(description = "게시글을 수정하는 API입니다.")
     public ResponseDto<Void> editPost(
         @RequestBody @Valid PostEditRequestDto requestDto
     ) {
@@ -52,6 +55,7 @@ public class PostController {
     }
 
     @GetMapping("/list")
+    @Operation(description = "전체 게시글을 가져오는 API입니다.")
     public ResponseDto<List<PostGetResponseDto>> getPostList() {
         List<PostGetResponseDto> postList = postService.getPostList();
 
@@ -59,6 +63,7 @@ public class PostController {
     }
 
     @GetMapping("/detail/{id}")
+    @Operation(description = "특정 게시글의 상세정보를 가져오는 API입니다. 아래 id값에 해당하는 게시글을 가져옵니다.")
     public ResponseDto<PostDetailResponseDto> getPostDetail(
         @PathVariable Long id
     ) {

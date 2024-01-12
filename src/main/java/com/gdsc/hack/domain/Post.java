@@ -1,10 +1,10 @@
 package com.gdsc.hack.domain;
 
 import com.gdsc.hack.global.entity.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Post extends BaseEntity {
@@ -15,8 +15,12 @@ public class Post extends BaseEntity {
     public String title;
     public String content;
 
-    public Long latitude;
-    public Long longitude;
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    public List<FoodMap> foodMapList = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, name = "user_id")
+    public User user;
 
     public String review;
 }

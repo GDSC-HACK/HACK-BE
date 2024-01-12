@@ -1,11 +1,19 @@
 package com.gdsc.hack.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
 public class MapNode {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false, name = "restaurant_name")
     public String name;

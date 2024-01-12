@@ -27,4 +27,12 @@ public class Post extends BaseEntity {
     public User user;
 
     public String review;
+
+    public void updateColumn(
+        String title,
+        String content
+    ) {
+        this.title = title;
+        this.content = content;
+    }
 }

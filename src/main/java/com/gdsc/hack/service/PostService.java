@@ -99,4 +99,11 @@ public class PostService {
                 .commentList(new ArrayList<>())
                 .build();
     }
+
+    public void delete(Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("게시글 삭제 실패: 해당하는 게시글이 없습니다."));
+
+        postRepository.delete(post);
+    }
 }

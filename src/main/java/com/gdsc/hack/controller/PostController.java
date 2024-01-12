@@ -71,4 +71,14 @@ public class PostController {
 
         return ResponseDto.success("상세 조회 성공: 게시글을 성공적으로 가져왔습니다.", postDetail);
     }
+
+    @DeleteMapping("/delete/{id}")
+    @Operation(description = "게시물을 삭제하는 API입니다.")
+    public ResponseDto<Void> deletePost(
+        @PathVariable Long id
+    ) {
+        postService.delete(id);
+
+        return ResponseDto.success("게시글 삭제 성공: 성공적으로 게시글이 삭제되었습니다.");
+    }
 }

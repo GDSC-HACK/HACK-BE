@@ -10,7 +10,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop # 옵션은 필요에 따라 변경
+      ddl-auto: create # 옵션은 필요에 따라 변경
     properties:
       hibernate:
         default_batch_fetch_size: 100 # 지연로딩 최적화를 위한 옵션

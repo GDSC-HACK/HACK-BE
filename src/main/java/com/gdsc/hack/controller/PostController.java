@@ -12,21 +12,19 @@ import com.gdsc.hack.service.MapNodeService;
 import com.gdsc.hack.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/post")
 public class PostController {
     private final PostService postService;
     private final FoodMapService foodMapService;
     private final MapNodeService mapNodeService;
 
-    @PostMapping("/post")
+    @PostMapping("/write")
     public ResponseDto<Void> post(
         @RequestBody @Valid PostRequestDto requestDto
     ) {
@@ -39,8 +37,8 @@ public class PostController {
         return ResponseDto.success("저장 완료: 게시글이 성공적으로 작성되었습니다.");
     }
 
-    @PutMapping("/post")
-    public ResponseDto<Void> fixPost(
+    @PutMapping("/edit")
+    public ResponseDto<Void> editPost(
         @RequestBody @Valid PostEditRequestDto requestDto
     ) {
         postService.editPost(requestDto);

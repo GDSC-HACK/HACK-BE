@@ -3,11 +3,13 @@ package com.gdsc.hack.domain;
 import com.gdsc.hack.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
 @Builder
 public class Post extends BaseEntity {
     @Id
@@ -18,7 +20,7 @@ public class Post extends BaseEntity {
     public String content;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
-    public List<FoodMap> foodMapList = new ArrayList<>();
+    public final List<FoodMap> foodMapList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "user_id")

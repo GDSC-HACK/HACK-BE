@@ -1,5 +1,6 @@
 package com.gdsc.hack.domain;
 
+import com.gdsc.hack.dto.response.CommentDetailResponseDto;
 import com.gdsc.hack.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,4 +25,13 @@ public class Comment extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
+
+    public CommentDetailResponseDto toDetailDto() {
+        return CommentDetailResponseDto
+                .builder()
+                .commentId(this.id)
+                .author(this.user.getNickname())
+                .content(this.content)
+                .build();
+    }
 }

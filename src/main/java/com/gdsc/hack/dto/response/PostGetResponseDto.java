@@ -13,4 +13,5 @@ public class PostGetResponseDto {
 	private String content;
 	private String userName;
 	private FoodMapGetResponseDto foodMap;
+	private int commentCnt;
 }

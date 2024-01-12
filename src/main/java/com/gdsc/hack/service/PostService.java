@@ -1,14 +1,12 @@
 package com.gdsc.hack.service;
 
+import com.gdsc.hack.domain.Comment;
 import com.gdsc.hack.domain.MapNode;
 import com.gdsc.hack.domain.Post;
 import com.gdsc.hack.domain.User;
 import com.gdsc.hack.dto.request.PostEditRequestDto;
 import com.gdsc.hack.dto.request.PostRequestDto;
-import com.gdsc.hack.dto.response.FoodMapGetResponseDto;
-import com.gdsc.hack.dto.response.MapNodeGetRequestDto;
-import com.gdsc.hack.dto.response.PostDetailResponseDto;
-import com.gdsc.hack.dto.response.PostGetResponseDto;
+import com.gdsc.hack.dto.response.*;
 import com.gdsc.hack.repository.PostRepository;
 import com.gdsc.hack.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -69,6 +67,7 @@ public class PostService {
                             .content(post.getContent())
                             .userName(post.getUser().getNickname())
                             .foodMap(foodMapGetResponseDto)
+                            .commentCnt(post.getCommentList().size())
                             .build();
                 })
                 .toList();
@@ -89,6 +88,11 @@ public class PostService {
                 .mapNodeList(mapNodeRequestDtoList)
                 .build();
 
+        List<CommentDetailResponseDto> commentDetailDtoList = post.getCommentList()
+                .stream()
+                .map(Comment::toDetailDto)
+                .toList();
+
         return PostDetailResponseDto
                 .builder()
                 .postId(post.getId())
@@ -96,7 +100,7 @@ public class PostService {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .foodMap(foodMapGetResponseDto)
-                .commentList(new ArrayList<>())
+                .commentList(commentDetailDtoList)
                 .build();
     }
 

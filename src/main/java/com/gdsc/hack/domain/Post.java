@@ -16,17 +16,17 @@ public class Post extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public String title;
-    public String content;
+    private String title;
+    private String content;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
-    public final List<FoodMap> foodMapList = new ArrayList<>();
+    private final List<FoodMap> foodMapList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "user_id")
-    public User user;
+    private User user;
 
-    public String review;
+    private String review;
 
     public void updateColumn(
         String title,

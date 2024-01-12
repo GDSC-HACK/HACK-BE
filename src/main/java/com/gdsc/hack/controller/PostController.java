@@ -6,6 +6,8 @@ import com.gdsc.hack.dto.request.MapNodeEditRequestDto;
 import com.gdsc.hack.dto.request.MapNodeRequestDto;
 import com.gdsc.hack.dto.request.PostEditRequestDto;
 import com.gdsc.hack.dto.request.PostRequestDto;
+import com.gdsc.hack.dto.response.PostDetailResponseDto;
+import com.gdsc.hack.dto.response.PostGetResponseDto;
 import com.gdsc.hack.global.dto.ResponseDto;
 import com.gdsc.hack.service.FoodMapService;
 import com.gdsc.hack.service.MapNodeService;
@@ -47,5 +49,21 @@ public class PostController {
         mapNodeService.editMapNode(mapNodeList);
 
         return ResponseDto.success("수정 완료: 게시글이 성공적으로 수정되었습니다.");
+    }
+
+    @GetMapping("/list")
+    public ResponseDto<List<PostGetResponseDto>> getPostList() {
+        List<PostGetResponseDto> postList = postService.getPostList();
+
+        return ResponseDto.success("커뮤니티 글 가져오기 성공: 게시글들을 성공적으로 가져왔습니다.", postList);
+    }
+
+    @GetMapping("/detail/{id}")
+    public ResponseDto<PostDetailResponseDto> getPostDetail(
+        @PathVariable Long id
+    ) {
+        PostDetailResponseDto postDetail = postService.getPostDetail(id);
+
+        return ResponseDto.success("상세 조회 성공: 게시글을 성공적으로 가져왔습니다.", postDetail);
     }
 }

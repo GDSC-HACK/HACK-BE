@@ -1,5 +1,7 @@
 package com.gdsc.hack.domain;
 
+import com.gdsc.hack.dto.response.FoodMapGetResponseDto;
+import com.gdsc.hack.dto.response.MapNodeGetRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,10 +23,22 @@ public class FoodMap {
     @JoinColumn(nullable = false, name = "user_id")
     public User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "post_id")
     public Post post;
 
     @OneToMany(mappedBy = "foodMap", cascade = CascadeType.REMOVE)
     public final List<MapNode> mapNodeList = new ArrayList<>();
+
+    public FoodMapGetResponseDto toGetDto() {
+        List<MapNodeGetRequestDto> mapNodeGetRequestDtoList = this.mapNodeList
+                .stream()
+                .map(MapNode::toGetDto)
+                .toList();
+
+        return FoodMapGetResponseDto
+                .builder()
+                .mapNodeList(mapNodeGetRequestDtoList)
+                .build();
+    }
 }

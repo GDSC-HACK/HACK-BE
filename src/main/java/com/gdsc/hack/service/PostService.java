@@ -1,17 +1,24 @@
 package com.gdsc.hack.service;
 
+import com.gdsc.hack.domain.MapNode;
 import com.gdsc.hack.domain.Post;
 import com.gdsc.hack.domain.User;
 import com.gdsc.hack.dto.request.PostEditRequestDto;
 import com.gdsc.hack.dto.request.PostRequestDto;
+import com.gdsc.hack.dto.response.FoodMapGetResponseDto;
+import com.gdsc.hack.dto.response.MapNodeGetRequestDto;
+import com.gdsc.hack.dto.response.PostDetailResponseDto;
+import com.gdsc.hack.dto.response.PostGetResponseDto;
 import com.gdsc.hack.repository.PostRepository;
 import com.gdsc.hack.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -45,5 +52,51 @@ public class PostService {
                 .orElseThrow(() -> new EntityNotFoundException("Post 수정 실패: 해당 id와 매칭되는 엔티티가 없습니다."));
 
         post.checkUserAndUpdateColumn(user, dto.getTitle(), dto.getContent());
+    }
+
+    public List<PostGetResponseDto> getPostList() {
+        List<Post> postList = postRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
+
+		return postList
+                .stream()
+                .map(post -> {
+                    FoodMapGetResponseDto foodMapGetResponseDto = post.getFoodMap().toGetDto();
+
+					return PostGetResponseDto
+                            .builder()
+                            .post_id(post.getId())
+                            .title(post.getTitle())
+                            .content(post.getContent())
+                            .userName(post.getUser().getNickname())
+                            .foodMap(foodMapGetResponseDto)
+                            .build();
+                })
+                .toList();
+    }
+
+    public PostDetailResponseDto getPostDetail(Long id) {
+        Post post = postRepository
+                .findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("상세 정보 조회 실패: 존재하지 않는 게시물입니다."));
+
+        List<MapNodeGetRequestDto> mapNodeRequestDtoList = post.getFoodMap().getMapNodeList()
+                .stream()
+                .map(MapNode::toGetDto)
+                .toList();
+
+        FoodMapGetResponseDto foodMapGetResponseDto = FoodMapGetResponseDto
+                .builder()
+                .mapNodeList(mapNodeRequestDtoList)
+                .build();
+
+        return PostDetailResponseDto
+                .builder()
+                .postId(post.getId())
+                .authorName(post.getUser().getNickname())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .foodMap(foodMapGetResponseDto)
+                .commentList(new ArrayList<>())
+                .build();
     }
 }

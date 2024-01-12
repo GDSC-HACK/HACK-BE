@@ -1,5 +1,6 @@
 package com.gdsc.hack.domain;
 
+import com.gdsc.hack.dto.response.MapNodeGetRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -42,5 +43,14 @@ public class MapNode {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public MapNodeGetRequestDto toGetDto() {
+        return MapNodeGetRequestDto
+                .builder()
+                .restaurantName(this.name)
+                .latitude(this.latitude)
+                .longitude(this.longitude)
+                .build();
     }
 }

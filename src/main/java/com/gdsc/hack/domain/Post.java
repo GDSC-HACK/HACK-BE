@@ -2,8 +2,10 @@ package com.gdsc.hack.domain;
 
 import com.gdsc.hack.global.entity.BaseEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,8 @@ import java.util.List;
 @Entity
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,4 +31,8 @@ public class Post extends BaseEntity {
     public User user;
 
     public String review;
+
+    @OneToMany(mappedBy = "post")
+    private List<Favorite> favorites = new ArrayList<>();
+
 }

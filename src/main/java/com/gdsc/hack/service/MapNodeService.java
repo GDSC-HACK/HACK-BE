@@ -43,7 +43,8 @@ public class MapNodeService {
 	@Transactional
 	public void editMapNode(List<MapNodeEditRequestDto> dtoList) {
 		dtoList.forEach(nodeEditDto -> {
-			User user = userRepository.findByEmail(nodeEditDto.getEmail());
+			User user = userRepository.findByEmail(nodeEditDto.getEmail())
+					.orElseThrow(()-> new IllegalArgumentException("editMapNode: 유저를 찾을 수 없습니다."));
 
 			MapNode mapNode = mapNodeRepository
 					.findById(nodeEditDto.getId())

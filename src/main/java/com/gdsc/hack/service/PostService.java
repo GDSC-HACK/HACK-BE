@@ -35,7 +35,8 @@ public class PostService {
 
     @Transactional
     public void editPost(PostEditRequestDto dto) {
-        User user = userRepository.findByEmail(dto.getEmail());
+        User user = userRepository.findByEmail(dto.getEmail())
+                .orElseThrow(()-> new IllegalArgumentException("editPost: 유저를 찾을 수 없습니다."));
         Post post = postRepository
                 .findById(dto.getPostId())
                 .orElseThrow(() -> new EntityNotFoundException("Post 수정 실패: 해당 id와 매칭되는 엔티티가 없습니다."));

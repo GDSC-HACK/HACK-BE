@@ -44,4 +44,7 @@ public class Post extends BaseEntity {
         this.title = title;
         this.content = content;
     }
+
+    @OneToMany(mappedBy = "post")
+    private List<Favorite> favorites = new ArrayList<>();
 }

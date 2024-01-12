@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -28,6 +30,7 @@ public class PostService {
                 .title(dto.getTitle())
                 .content(dto.getContent())
                 .user(user)
+                .favorites(new ArrayList<>())
                 .build();
 
         return postRepository.save(post);

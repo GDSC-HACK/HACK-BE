@@ -38,7 +38,7 @@ public class PostController {
 
         mapNodeService.writeMapNode(foodMap, mapNodeDtoList);
 
-        return ResponseDto.success("저장 완료: 게시글이 성공적으로 작성되었습니다.");
+        return ResponseDto.create("저장 완료: 게시글이 성공적으로 작성되었습니다.");
     }
 
     @PutMapping("/edit")
@@ -51,7 +51,7 @@ public class PostController {
 
         mapNodeService.editMapNode(mapNodeList);
 
-        return ResponseDto.success("수정 완료: 게시글이 성공적으로 수정되었습니다.");
+        return ResponseDto.create("수정 완료: 게시글이 성공적으로 수정되었습니다.");
     }
 
     @GetMapping("/list")
@@ -59,7 +59,7 @@ public class PostController {
     public ResponseDto<List<PostGetResponseDto>> getPostList() {
         List<PostGetResponseDto> postList = postService.getPostList();
 
-        return ResponseDto.success("커뮤니티 글 가져오기 성공: 게시글들을 성공적으로 가져왔습니다.", postList);
+        return ResponseDto.create("커뮤니티 글 가져오기 성공: 게시글들을 성공적으로 가져왔습니다.", postList);
     }
 
     @GetMapping("/detail/{id}")
@@ -69,7 +69,7 @@ public class PostController {
     ) {
         PostDetailResponseDto postDetail = postService.getPostDetail(id);
 
-        return ResponseDto.success("상세 조회 성공: 게시글을 성공적으로 가져왔습니다.", postDetail);
+        return ResponseDto.create("상세 조회 성공: 게시글을 성공적으로 가져왔습니다.", postDetail);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -79,6 +79,6 @@ public class PostController {
     ) {
         postService.delete(id);
 
-        return ResponseDto.success("게시글 삭제 성공: 성공적으로 게시글이 삭제되었습니다.");
+        return ResponseDto.create("게시글 삭제 성공: 성공적으로 게시글이 삭제되었습니다.");
     }
 }

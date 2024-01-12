@@ -1,14 +1,13 @@
 package com.gdsc.hack.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 @Entity
 @Getter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MapNode {
 
     @Id
@@ -16,12 +15,32 @@ public class MapNode {
     private Long id;
 
     @Column(nullable = false, name = "restaurant_name")
-    public String name;
+    private String name;
 
-    public Double latitude;
-    public Double longitude;
+    private Double latitude;
+    private Double longitude;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "food_map_id")
-    public FoodMap foodMap;
+    private FoodMap foodMap;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, name = "user_id")
+    private User user;
+
+    
+    public void checkUserAndUpdateColumn(
+        User user,
+        String name,
+        Double latitude,
+        Double longitude
+    ) {
+        if (this.user != user) {
+            throw new IllegalArgumentException("식당 수정 실패: 저자와 변경하려는 유저가 다릅니다.");
+        }
+
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 }

@@ -6,5 +6,5 @@ import java.util.List;
 
 @Getter
 public class FoodMapRequestDto {
-	public List<MapNodeRequestDto> mapNodeList;
+	private List<MapNodeRequestDto> mapNodeList;
 }

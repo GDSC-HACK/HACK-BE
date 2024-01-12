@@ -9,17 +9,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostRequestDto {
-    public String email;
-    public String title;
-    public String content;
-    public FoodMapRequestDto foodMap;
-
-    public Post toEntity(User user) {
-        return Post
-                .builder()
-                .title(this.title)
-                .content(this.content)
-                .user(user)
-                .build();
-    }
+    private String email;
+    private String title;
+    private String content;
+    private FoodMapRequestDto foodMap;
 }

@@ -13,26 +13,38 @@ import java.util.List;
 @Entity
 @Getter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public String title;
-    public String content;
+    private String title;
+    private String content;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
-    public final List<FoodMap> foodMapList = new ArrayList<>();
+    private final List<FoodMap> foodMapList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "user_id")
-    public User user;
+    private User user;
 
-    public String review;
+    private String review;
+
+    public void checkUserAndUpdateColumn(
+        User user,
+        String title,
+        String content
+    ) {
+        if (this.user != user) {
+            throw new IllegalArgumentException("Post 수정 실패: Post 작성자와 변경하려는 유저가 다릅니다.");
+        }
+
+        this.title = title;
+        this.content = content;
+    }
 
     @OneToMany(mappedBy = "post")
     private List<Favorite> favorites = new ArrayList<>();
-
 }

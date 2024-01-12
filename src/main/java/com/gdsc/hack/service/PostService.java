@@ -1,20 +1,15 @@
 package com.gdsc.hack.service;
 
-import com.gdsc.hack.domain.FoodMap;
-import com.gdsc.hack.domain.MapNode;
 import com.gdsc.hack.domain.Post;
 import com.gdsc.hack.domain.User;
-import com.gdsc.hack.dto.request.MapNodeRequestDto;
+import com.gdsc.hack.dto.request.PostEditRequestDto;
 import com.gdsc.hack.dto.request.PostRequestDto;
-import com.gdsc.hack.repository.FoodMapRepository;
-import com.gdsc.hack.repository.MapNodeRepository;
 import com.gdsc.hack.repository.PostRepository;
 import com.gdsc.hack.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,8 +17,6 @@ import java.util.List;
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
-    private final MapNodeRepository mapNodeRepository;
-    private final FoodMapRepository foodMapRepository;
 
     @Transactional
     public Post writePost(PostRequestDto dto) {
@@ -41,36 +34,12 @@ public class PostService {
     }
 
     @Transactional
-    public FoodMap writeFoodMap(Post post, PostRequestDto dto) {
-        FoodMap foodMap = FoodMap
-                .builder()
-                .user(post.getUser())
-                .post(post)
-                .build();
+    public void editPost(PostEditRequestDto dto) {
+        User user = userRepository.findByEmail(dto.getEmail());
+        Post post = postRepository
+                .findById(dto.getPostId())
+                .orElseThrow(() -> new EntityNotFoundException("Post 수정 실패: 해당 id와 매칭되는 엔티티가 없습니다."));
 
-        List<MapNodeRequestDto> mapNodeList = dto
-                .getFoodMap()
-                .getMapNodeList();
-        return foodMapRepository.save(foodMap);
+        post.checkUserAndUpdateColumn(user, dto.getTitle(), dto.getContent());
     }
-
-    @Transactional
-    public void writeMapNode(FoodMap foodMap, List<MapNodeRequestDto> dtoList) {
-        dtoList.forEach(nodeDto -> {
-            Double latitude = nodeDto.getLatitude();
-            Double longitude = nodeDto.getLongitude();
-            String restaurantName = nodeDto.getRestaurantName();
-
-            MapNode mapNode = MapNode
-                    .builder()
-                    .name(restaurantName)
-                    .latitude(latitude)
-                    .longitude(longitude)
-                    .foodMap(foodMap)
-                    .build();
-
-            mapNodeRepository.save(mapNode);
-        });
-    }
-
 }

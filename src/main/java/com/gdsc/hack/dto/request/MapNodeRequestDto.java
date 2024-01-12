@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class MapNodeRequestDto {
-	public String restaurantName;
-	public Double latitude;
-	public Double longitude;
+	private String restaurantName;
+	private Double latitude;
+	private Double longitude;
 }

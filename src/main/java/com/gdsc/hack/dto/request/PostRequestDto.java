@@ -1,7 +1,5 @@
 package com.gdsc.hack.dto.request;
 
-import com.gdsc.hack.domain.Post;
-import com.gdsc.hack.domain.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

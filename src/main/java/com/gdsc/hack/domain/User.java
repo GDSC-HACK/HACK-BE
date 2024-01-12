@@ -26,5 +26,5 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    public List<Post> postList = new ArrayList<>();
+    public final List<Post> postList = new ArrayList<>();
 }

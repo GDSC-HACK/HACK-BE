@@ -1,20 +1,15 @@
 package com.gdsc.hack.service;
 
-import com.gdsc.hack.domain.FoodMap;
-import com.gdsc.hack.domain.MapNode;
 import com.gdsc.hack.domain.Post;
 import com.gdsc.hack.domain.User;
-import com.gdsc.hack.dto.request.MapNodeRequestDto;
+import com.gdsc.hack.dto.request.PostEditRequestDto;
 import com.gdsc.hack.dto.request.PostRequestDto;
-import com.gdsc.hack.repository.FoodMapRepository;
-import com.gdsc.hack.repository.MapNodeRepository;
 import com.gdsc.hack.repository.PostRepository;
 import com.gdsc.hack.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -37,4 +32,13 @@ public class PostService {
         return postRepository.save(post);
     }
 
+    @Transactional
+    public void editPost(PostEditRequestDto dto) {
+        User user = userRepository.findByEmail(dto.getEmail());
+        Post post = postRepository
+                .findById(dto.getPostId())
+                .orElseThrow(() -> new EntityNotFoundException("Post 수정 실패: 해당 id와 매칭되는 엔티티가 없습니다."));
+
+        post.checkUserAndUpdateColumn(user, dto.getTitle(), dto.getContent());
+    }
 }

@@ -4,9 +4,9 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root # 데이터베이스 커넥션 이름
-    password: 1234 # 데이터베이스 커넥션 비밀번호
-    url: jdbc:mysql://localhost:3306/hack
+    username: ${root} # 데이터베이스 커넥션 이름
+    password: ${db-password} # 데이터베이스 커넥션 비밀번호
+    url: ${db-url}
 
   jpa:
     hibernate:
@@ -20,12 +20,12 @@ spring:
     ansi:
       enabled: always
 
-#logging:
-#  file:
-#    name: ${log-path} # slf4j를 사용할 때 생기는 로그 파일 경로
-#  level:
-#    org.hibernate.SQL: debug
-#    org.hibernate.type: trace
+logging:
+  file:
+    name: ${log-path} # slf4j를 사용할 때 생기는 로그 파일 경로
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
 
 springdoc:
   version: 1.6.8

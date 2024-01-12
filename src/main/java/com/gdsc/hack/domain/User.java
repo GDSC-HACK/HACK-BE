@@ -1,9 +1,9 @@
 package com.gdsc.hack.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class User {
@@ -15,4 +15,7 @@ public class User {
     private String nickname;
     private String email;
     private String password;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    public List<Post> postList = new ArrayList<>();
 }

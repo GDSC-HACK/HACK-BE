@@ -1,6 +1,8 @@
 package com.gdsc.hack.service;
 
 import com.gdsc.hack.domain.User;
+
+import com.gdsc.hack.dto.TokenDTO;
 import com.gdsc.hack.dto.UserDTO;
 import com.gdsc.hack.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TokenProvider tokenProvider;
 
     public User createUser(UserDTO userDTO){
         if(userDTO==null || userDTO.getEmail() ==null){
@@ -22,7 +25,7 @@ public class UserService {
 
         User user=User.builder()
                 .email(userDTO.getEmail())
-                .password(userDTO.getPassword())
+                .password(passwordEncoder.encrypt(userDTO.getEmail(), userDTO.getPassword()))
                 .nickname(userDTO.getNickname())
                 .build();
 
@@ -36,25 +39,25 @@ public class UserService {
     }
 
 
-    public void signInUser(UserDTO userDTO){
+    public UserDTO signInUser(UserDTO userDTO){
         User user = getByCredentials(userDTO.getEmail(), userDTO.getPassword());
-//        if (user != null) {
-//            final TokenDTO token = tokenProvider.createToken(user);
-//            return UserDTO.builder()
-//                    .username(user.getUsername())
-//                    .id(user.getId())
-//                    .accessToken(token.getAccessToken())
+        if(user !=null){
+            final TokenDTO token=tokenProvider.createToken(user);
+            return UserDTO.builder()
+                    .nickname(user.getNickname())
+                    .id(user.getId())
+                    .accessToken(token.getAccessToken())
 //                    .refreshToken(token.getRefreshToken())
-//                    .build();
-//        }
-//
-//        return null;
+                    .build();
+        }
+        return null;
     }
 
-    private User getByCredentials(String nickname, String password) {
-        final User originalUser=userRepository.findByNickname(nickname);
+    private User getByCredentials(String email, String password) {
+        final User originalUser=userRepository.findByEmail(email);
 
-        if(originalUser!=null && passwordEncoder.encrypt(nickname,password).equals(originalUser.getPassword())) {
+
+        if(originalUser!=null && passwordEncoder.encrypt(email,password).equals(originalUser.getPassword())) {
             log.info("getByCredentials: 사용자 인증 완료");
             return originalUser;
         }

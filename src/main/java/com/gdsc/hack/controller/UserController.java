@@ -30,7 +30,7 @@ public class UserController {
     //로그인
     @PostMapping("/signup")
     public ResponseEntity<?> signInUser(@RequestBody UserDTO userDTO){
-        userService.signInUser(userDTO);
-        return ResponseEntity.ok().body("ok");
+        UserDTO response = userService.signInUser(userDTO);
+        return ResponseEntity.ok().body(response);
     }
 }
